@@ -82,7 +82,7 @@ https://your-domain.example/cbrowse-skill.md
 cBrowse can produce both a distributable `.zip` and a signed `.crx`.
 
 ```bash
-npm run build:extension
+CBROWSE_GENERATE_KEY=1 npm run build:extension
 ```
 
 Artifacts are written to:
@@ -94,7 +94,8 @@ Artifacts are written to:
 ### Signing key behavior
 
 - If `release/keys/cbrowse-extension.pem` already exists, it is reused.
-- If no key exists, Chrome generates one during the first CRX build.
+- If no key exists, run the first build with `CBROWSE_GENERATE_KEY=1` to create one.
+- Without a key, cBrowse still builds the `.zip` and skips the `.crx`.
 - Keep that `.pem` file safe and private.
 - Do not commit the private key.
 - If you lose the key, the extension ID will change the next time you package it.

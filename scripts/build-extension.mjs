@@ -73,6 +73,7 @@ async function main() {
   const zipPath = path.join(releaseDir, zipName);
   const crxPath = path.join(releaseDir, crxName);
   const requestedKeyPath = process.env.CBROWSE_EXTENSION_KEY || defaultKeyPath;
+  const allowGeneratedKey = process.env.CBROWSE_GENERATE_KEY === "1";
 
   await ensureCleanDir(buildRoot);
   await mkdir(releaseDir, { recursive: true });
@@ -85,9 +86,10 @@ async function main() {
   const chromeBinary = findChromeBinary();
   let builtCrx = false;
 
-  if (chromeBinary) {
+  const hasExistingKey = await fileExists(requestedKeyPath);
+
+  if (chromeBinary && (hasExistingKey || allowGeneratedKey)) {
     const chromeArgs = [`--pack-extension=${stageDir}`];
-    const hasExistingKey = await fileExists(requestedKeyPath);
     if (hasExistingKey) {
       chromeArgs.push(`--pack-extension-key=${requestedKeyPath}`);
     }
