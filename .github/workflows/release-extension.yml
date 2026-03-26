@@ -1,0 +1,62 @@
+name: Release Extension
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-extension:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run check
+
+      - name: Install Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Restore extension key
+        if: ${{ secrets.CBROWSE_EXTENSION_PEM != '' }}
+        run: |
+          mkdir -p release/keys
+          printf '%s' '${{ secrets.CBROWSE_EXTENSION_PEM }}' | base64 --decode > release/keys/cbrowse-extension.pem
+
+      - name: Build extension artifacts
+        run: npm run build:extension
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cbrowse-extension
+          path: |
+            release/*.zip
+            release/*.crx
+            release/SHA256SUMS.txt
+
+      - name: Publish GitHub release assets
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.zip
+            release/*.crx
+            release/SHA256SUMS.txt

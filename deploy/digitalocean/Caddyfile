@@ -1,0 +1,12 @@
+{$DOMAINS} {
+  encode gzip
+
+  @bridge path /bridge*
+  handle @bridge {
+    reverse_proxy cbrowse:8787
+  }
+
+  handle {
+    reverse_proxy cbrowse:8788
+  }
+}

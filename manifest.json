@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "cBrowse",
+  "version": "0.1.0",
+  "description": "Hosted browser control extension with local bridge, MCP support, and multi-agent connectivity.",
+  "permissions": ["tabs", "storage", "scripting", "activeTab", "sidePanel", "debugger"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "extension/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "cBrowse",
+    "default_popup": "extension/popup.html"
+  },
+  "side_panel": {
+    "default_path": "extension/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["extension/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

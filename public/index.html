@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>cBrowse</title>
+    <meta
+      name="description"
+      content="Private browser control for AI agents. Install the extension, copy your browser-specific MCP, and start working with one dedicated tab."
+    />
+    <link rel="stylesheet" href="/styles.css?v=20260326c" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-shell header-shell">
+        <div class="header-row">
+          <a class="brand" href="/">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>cBrowse</span>
+          </a>
+
+          <div class="header-actions">
+            <nav class="site-nav" aria-label="Primary">
+              <a href="#how">How It Works</a>
+              <a href="#features">Features</a>
+              <a href="#get-started">Get Started</a>
+              <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+            </nav>
+
+            <button class="theme-toggle desktop-theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode">
+              Light mode
+            </button>
+          </div>
+
+          <button
+            class="mobile-menu-toggle"
+            id="mobile-menu-toggle"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span class="menu-line" aria-hidden="true"></span>
+            <span class="menu-line" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="mobile-menu" id="mobile-menu" hidden>
+          <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a href="#how">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#get-started">Get Started</a>
+            <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </nav>
+
+          <button class="theme-toggle mobile-theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode">
+            Light mode
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-shell page">
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">Hosted cBrowse MCP for private browser control</p>
+          <h1>Let your AI agent use one clean cBrowse tab, not your whole browser.</h1>
+          <p class="lede">
+            Load the extension, copy your private MCP route, and keep agent work scoped to a
+            dedicated browser tab.
+          </p>
+
+          <div class="hero-actions">
+            <button class="button button-primary" data-copy-target="mcp-endpoint">Copy MCP</button>
+            <a class="button button-secondary" href="#get-started">Get Started</a>
+          </div>
+
+          <div class="hero-notes">
+            <span>Private route</span>
+            <span>Dedicated tabs</span>
+            <span>Hosted relay</span>
+          </div>
+        </div>
+
+        <div class="hero-stack">
+          <article class="surface route-surface">
+            <div class="panel-row">
+              <p class="panel-label">cBrowse MCP Route</p>
+              <button class="button button-inline" data-copy-target="hero-mcp-endpoint">Copy</button>
+            </div>
+            <code id="hero-mcp-endpoint" class="code-block">Loading…</code>
+            <div class="hero-visual">
+              <img src="/media/cbrowse-hero.svg" alt="cBrowse relay overview" />
+            </div>
+          </article>
+
+          <div class="hero-rail">
+            <article class="surface status-surface">
+              <div class="status-head">
+                <span class="signal-dot" id="status-dot"></span>
+                <span id="status-text">Checking bridge…</span>
+              </div>
+              <p id="status-meta" class="status-copy">Loading browser route…</p>
+              <p id="status-session" class="status-copy status-strong">No active browser session yet.</p>
+            </article>
+
+            <article class="surface">
+              <div class="panel-row">
+                <p class="panel-label">Codex</p>
+                <button class="button button-inline" data-copy-target="codex-command">Copy</button>
+              </div>
+              <code id="codex-command" class="code-block">Loading…</code>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="section-head">
+          <p class="section-label">How It Works</p>
+          <h2>Three steps. No local relay dance.</h2>
+          <p class="section-copy">
+            The flow stays short: install the extension, connect your agent, then claim one tab.
+          </p>
+        </div>
+
+        <div class="steps">
+          <article>
+            <p class="step-index">01</p>
+            <h3>Load the extension</h3>
+            <p>The extension keeps the browser side connected and exposes your private route.</p>
+          </article>
+          <article>
+            <p class="step-index">02</p>
+            <h3>Copy the MCP</h3>
+            <p>Use your browser-specific MCP URL so the agent targets your browser only.</p>
+          </article>
+          <article>
+            <p class="step-index">03</p>
+            <h3>Claim a tab</h3>
+            <p>Each task gets its own tab group and a cleaner handoff for browser work.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-head">
+          <p class="section-label">Features</p>
+          <h2>Built for clean cBrowse agent-browser handoff.</h2>
+        </div>
+
+        <div class="features">
+          <article>
+            <h3>Live bridge status</h3>
+            <p>See whether the connected browser is ready before the agent starts acting.</p>
+          </article>
+          <article>
+            <h3>Dark by default</h3>
+            <p>Starts in dark mode and supports a light mode toggle when you want the page brighter.</p>
+          </article>
+          <article>
+            <h3>Skill + llms.txt</h3>
+            <p>Use the hosted MCP directly or attach the cBrowse skill when your client supports it.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section setup-section" id="get-started">
+        <div class="section-head">
+          <p class="section-label">Get Started</p>
+          <h2>Install once. Copy once. Start work.</h2>
+          <p class="section-copy">
+            The setup is just extension, MCP, and an optional cBrowse skill layer.
+          </p>
+        </div>
+
+        <div class="setup-grid">
+          <article class="setup-copy">
+            <p class="setup-index">/01 INSTALL</p>
+            <p>Load the unpacked extension and confirm the bridge is connected.</p>
+
+            <p class="setup-index">/02 CONNECT</p>
+            <p>
+              Add the browser-specific MCP to your agent. Use a stable `sessionId` and short
+              `taskName` when you want cleaner tab groups.
+            </p>
+
+            <p class="setup-index">/03 OPTIONAL SKILL</p>
+            <p>Attach the hosted cBrowse skill when your client supports extra browser instructions.</p>
+          </article>
+
+          <div class="setup-stack">
+            <article class="surface">
+              <div class="panel-row">
+                <p class="panel-label">MCP URL</p>
+                <button class="button button-inline" data-copy-target="mcp-endpoint">Copy</button>
+              </div>
+              <code id="mcp-endpoint" class="code-block">Loading…</code>
+            </article>
+
+            <article class="surface">
+              <div class="panel-row">
+                <p class="panel-label">Skill</p>
+                <div class="panel-actions">
+                  <button class="button button-inline" data-copy-target="skill-url">Copy URL</button>
+                  <button class="button button-inline" id="copy-skill-text">Copy text</button>
+                </div>
+              </div>
+              <code id="skill-url" class="code-block">Loading…</code>
+            </article>
+          </div>
+        </div>
+
+        <div class="resource-strip">
+          <a href="/cbrowse-skill.md" target="_blank" rel="noreferrer">Skill</a>
+          <a href="/llms.txt" target="_blank" rel="noreferrer">llms.txt</a>
+          <span id="llms-url" class="hidden-copy">Loading…</span>
+          <span id="setup-prompt" class="hidden-copy">Loading…</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-shell footer-row">
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Open source. MIT licensed.</span>
+        </div>
+
+        <div class="footer-links">
+          <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://github.com/issues" target="_blank" rel="noreferrer">Issues</a>
+          <a href="/cbrowse-skill.md" target="_blank" rel="noreferrer">Skill</a>
+          <a href="/llms.txt" target="_blank" rel="noreferrer">llms.txt</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/app.js?v=20260326c"></script>
+  </body>
+</html>
