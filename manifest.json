@@ -3,6 +3,12 @@
   "name": "cBrowse",
   "version": "0.1.1",
   "description": "Connect MCP agents to your real signed-in browser with cookies, tabs, and page state intact.",
+  "icons": {
+    "16": "extension/icons/icon-16.png",
+    "32": "extension/icons/icon-32.png",
+    "48": "extension/icons/icon-48.png",
+    "128": "extension/icons/icon-128.png"
+  },
   "permissions": ["tabs", "storage", "scripting", "activeTab", "sidePanel", "debugger"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -11,6 +17,11 @@
   },
   "action": {
     "default_title": "cBrowse",
+    "default_icon": {
+      "16": "extension/icons/icon-16.png",
+      "32": "extension/icons/icon-32.png",
+      "48": "extension/icons/icon-48.png"
+    },
     "default_popup": "extension/popup.html"
   },
   "side_panel": {
