@@ -4,8 +4,10 @@ const PAIRING_KEY_PREFIX = "cbrowse_";
 const DEFAULT_SKILL_URL = `${HOSTED_ORIGIN}/cbrowse-skill.md`;
 const DEFAULT_LLMSTXT_URL = `${HOSTED_ORIGIN}/llms.txt`;
 const STATE_KEY = "cbrowseState";
+const CONTENT_SCRIPT_PATH = "extension/content.js";
 const CONTENT_RETRY_DELAY_MS = 250;
 const CONTENT_RETRY_LIMIT = 20;
+const CONTENT_SCRIPT_PROTOCOLS = new Set(["http:", "https:", "file:"]);
 const DEBUGGER_PROTOCOL_VERSION = "1.3";
 const MAX_ANNOTATED_RECTS = 40;
 const SESSION_TITLE_ANIMATION_INTERVAL_MS = 900;
@@ -1091,6 +1093,61 @@ async function getTabById(tabId) {
   return tab;
 }
 
+function scriptableTabUrl(tab) {
+  const rawUrl =
+    (typeof tab?.pendingUrl === "string" && tab.pendingUrl) ||
+    (typeof tab?.url === "string" && tab.url) ||
+    "";
+
+  if (!rawUrl) {
+    return {
+      ok: false,
+      reason: `Tab ${tab?.id ?? "unknown"} does not have a loaded page yet.`,
+    };
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return {
+      ok: false,
+      reason: `Tab ${tab?.id ?? "unknown"} has an invalid URL: ${rawUrl}`,
+    };
+  }
+
+  if (!CONTENT_SCRIPT_PROTOCOLS.has(parsed.protocol)) {
+    return {
+      ok: false,
+      reason: `Tab ${tab?.id ?? "unknown"} is using an unsupported URL for cBrowse automation: ${rawUrl}`,
+    };
+  }
+
+  return { ok: true, url: rawUrl };
+}
+
+function isMissingContentReceiverError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("Could not establish connection") &&
+    message.includes("Receiving end does not exist")
+  );
+}
+
+async function ensureContentScript(tabId) {
+  const tab = await getTabById(tabId);
+  const scriptable = scriptableTabUrl(tab);
+  if (!scriptable.ok) {
+    throw new Error(scriptable.reason);
+  }
+
+  await chrome.scripting.executeScript({
+    target: { tabId },
+    files: [CONTENT_SCRIPT_PATH],
+  });
+  await delay(CONTENT_RETRY_DELAY_MS);
+}
+
 async function getActiveTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab || typeof tab.id !== "number") {
@@ -1397,6 +1454,7 @@ async function sendToContentOnce(tabId, payload) {
 
 async function sendToContent(tabId, payload) {
   let lastError = null;
+  let injectedContentScript = false;
   for (let attempt = 0; attempt < CONTENT_RETRY_LIMIT; attempt += 1) {
     try {
       const response = await sendToContentOnce(tabId, payload);
@@ -1411,6 +1469,11 @@ async function sendToContent(tabId, payload) {
         throw error;
       }
       lastError = error;
+      if (!injectedContentScript && isMissingContentReceiverError(error)) {
+        await ensureContentScript(tabId);
+        injectedContentScript = true;
+        continue;
+      }
       await delay(CONTENT_RETRY_DELAY_MS);
     }
   }
