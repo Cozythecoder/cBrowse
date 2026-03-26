@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "cBrowse",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Connect MCP agents to your real signed-in browser with cookies, tabs, and page state intact.",
   "icons": {
     "16": "extension/icons/icon-16.png",

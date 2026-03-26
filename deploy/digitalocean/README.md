@@ -1,11 +1,11 @@
 # DigitalOcean Deployment
 
-This deployment turns `cBrowse` into a remotely hosted relay:
+This deployment serves `cBrowse` from your own DigitalOcean Droplet:
 
 - browser extension bridge over `wss://<domain>/bridge`
-- hosted HTTP MCP endpoint over `https://<domain>/mcp`
+- HTTP MCP endpoint over `https://<domain>/mcp`
 
-That lets AI agents connect to the hosted MCP URL while your browser extension connects to the hosted bridge URL. You do not need to keep a local stdio MCP process open just to expose the relay.
+That lets AI agents connect to the public MCP URL while your browser extension connects to the public bridge URL. You do not need to keep a local stdio MCP process open just to expose the browser session.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ The script defaults to:
 ## Deploy
 
 ```bash
-DOMAINS='cbrowse.example.com, backup.example.com' ./deploy/digitalocean/deploy.sh root@<droplet-ip>
+DOMAINS='cbrowse.tech' ./deploy/digitalocean/deploy.sh root@cbrowse.tech
 ```
 
 For a non-root SSH user with sudo, either pass a writable remote directory or let the script default to `~/cBrowse`.
@@ -42,6 +42,12 @@ For a non-root SSH user with sudo, either pass a writable remote directory or le
 ```bash
 docker compose ps
 curl -I https://<domain>/mcp
+```
+
+For the live domain:
+
+```bash
+curl -I https://cbrowse.tech/mcp
 ```
 
 `GET /mcp` should return `405 Method Not Allowed`, which confirms the MCP route is live and waiting for MCP `POST` requests.
@@ -58,4 +64,10 @@ For Codex CLI specifically:
 
 ```bash
 codex mcp add cbrowse_remote --url https://<domain>/mcp
+```
+
+For the current public deployment:
+
+```bash
+codex mcp add cbrowse_remote --url https://cbrowse.tech/mcp
 ```

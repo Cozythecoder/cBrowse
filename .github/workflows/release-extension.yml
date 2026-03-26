@@ -33,10 +33,13 @@ jobs:
         uses: browser-actions/setup-chrome@v1
 
       - name: Restore extension key
-        if: ${{ secrets.CBROWSE_EXTENSION_PEM != '' }}
+        env:
+          CBROWSE_EXTENSION_PEM: ${{ secrets.CBROWSE_EXTENSION_PEM }}
         run: |
-          mkdir -p release/keys
-          printf '%s' '${{ secrets.CBROWSE_EXTENSION_PEM }}' | base64 --decode > release/keys/cbrowse-extension.pem
+          if [ -n "$CBROWSE_EXTENSION_PEM" ]; then
+            mkdir -p release/keys
+            printf '%s' "$CBROWSE_EXTENSION_PEM" | base64 --decode > release/keys/cbrowse-extension.pem
+          fi
 
       - name: Build extension artifacts
         run: npm run build:extension
