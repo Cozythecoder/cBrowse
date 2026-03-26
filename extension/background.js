@@ -1,5 +1,5 @@
-const HOSTED_ORIGIN = "https://gamehub.qzz.io";
-const HOSTED_BRIDGE_ORIGIN = "wss://gamehub.qzz.io";
+const HOSTED_ORIGIN = "https://cbrowse.tech";
+const HOSTED_BRIDGE_ORIGIN = "wss://cbrowse.tech";
 const PAIRING_KEY_PREFIX = "cbrowse_";
 const DEFAULT_SKILL_URL = `${HOSTED_ORIGIN}/cbrowse-skill.md`;
 const DEFAULT_LLMSTXT_URL = `${HOSTED_ORIGIN}/llms.txt`;
@@ -56,10 +56,10 @@ const TASK_STATUS_COLOR = {
 const AGENT_PROFILES = [
   {
     key: "hosted_mcp",
-    name: "Hosted MCP",
-    integration: "Cloud relay",
+    name: "Signed-in Browser",
+    integration: "cBrowse bridge",
     liveTransport: "mcp",
-    description: "Hosted cBrowse relay for any MCP-capable agent.",
+    description: "Connect any MCP-capable agent to the browser you already use.",
   },
 ];
 
@@ -405,10 +405,10 @@ function sessionAgentDetails(session) {
 
 function buildSetupPrompt() {
   if (!state.pairingKey) {
-    return "Preparing private browser pairing…";
+    return "Preparing browser pairing…";
   }
 
-  return `Connect the hosted cbrowse MCP at "${state.mcpUrl}". If your client supports extra instructions, use the cBrowse skill at "${DEFAULT_SKILL_URL}". Then claim a dedicated browser tab before acting.`;
+  return `Connect cBrowse at "${state.mcpUrl}". If your client supports extra instructions, use the cBrowse skill at "${DEFAULT_SKILL_URL}". Reuse the cookies, auth, and page state already present in the browser that issued this route. Claim a tab before destructive actions.`;
 }
 
 function serializableState() {

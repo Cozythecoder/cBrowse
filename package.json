@@ -1,9 +1,9 @@
 {
   "name": "cbrowse",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "type": "module",
-  "description": "cBrowse hosted browser bridge with MCP and Codex skill support.",
+  "description": "Connect MCP agents to a real signed-in browser with cookies, tabs, and page state intact.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cozythecoder/cBrowse.git"

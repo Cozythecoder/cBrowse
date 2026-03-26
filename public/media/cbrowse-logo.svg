@@ -1,0 +1,52 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">cBrowse logo mark</title>
+  <desc id="desc">A browser window with an orange orbit and control path forming a clean premium mark for cBrowse.</desc>
+  <defs>
+    <linearGradient id="bg" x1="160" y1="128" x2="864" y2="904" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111823"/>
+      <stop offset="1" stop-color="#071018"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="250" y1="232" x2="774" y2="784" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#182432" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#0B121A" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="332" y1="304" x2="718" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB06A"/>
+      <stop offset="0.5" stop-color="#FF8B3D"/>
+      <stop offset="1" stop-color="#F35F16"/>
+    </linearGradient>
+    <linearGradient id="accentSoft" x1="316" y1="280" x2="728" y2="744" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB06A" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#FF8B3D" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="128" y="120" width="768" height="792" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#02050A" flood-opacity="0.36"/>
+    </filter>
+    <filter id="glow" x="250" y="236" width="524" height="556" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <rect x="192" y="182" width="640" height="640" rx="120" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="2"/>
+    <rect x="228" y="218" width="568" height="74" rx="34" fill="#121B26" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1.5"/>
+    <circle cx="274" cy="255" r="10" fill="#FF8B3D"/>
+    <circle cx="308" cy="255" r="10" fill="#FFD089" opacity="0.9"/>
+    <circle cx="342" cy="255" r="10" fill="#5FD9A0" opacity="0.92"/>
+
+    <rect x="250" y="330" width="524" height="392" rx="80" fill="#0C141D" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="1.5"/>
+    <rect x="294" y="374" width="438" height="304" rx="58" fill="url(#accentSoft)"/>
+
+    <path d="M324 472C324 392.558 388.558 328 468 328H556C635.442 328 700 392.558 700 472C700 551.442 635.442 616 556 616H500C420.558 616 356 680.558 356 760" stroke="url(#accent)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M322 470C322 391.454 386.454 327 465 327H557C636.112 327 700 390.888 700 470C700 549.112 636.112 613 557 613H503C425.268 613 362 676.268 362 754" stroke="#FFF1E7" stroke-opacity="0.16" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g filter="url(#glow)">
+      <circle cx="662" cy="666" r="56" fill="#FF8B3D" opacity="0.20"/>
+    </g>
+    <circle cx="662" cy="666" r="18" fill="url(#accent)"/>
+    <path d="M662 560V648" stroke="url(#accent)" stroke-width="16" stroke-linecap="round"/>
+    <path d="M702 704H770" stroke="#5FD9A0" stroke-width="16" stroke-linecap="round"/>
+    <path d="M554 704H622" stroke="#5FD9A0" stroke-width="16" stroke-linecap="round"/>
+    <path d="M612 756L662 706L712 756" stroke="#FFD089" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

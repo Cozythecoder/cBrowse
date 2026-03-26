@@ -1,23 +1,40 @@
-# cBrowse
+<p align="center">
+  <img src="public/media/cbrowse-logo.svg" alt="cBrowse" width="108" height="108" />
+</p>
 
-cBrowse is a hosted browser bridge for AI agents.
+<h1 align="center">cBrowse</h1>
 
-It gives an agent one dedicated browser tab, exposes browser actions over MCP, and ships a Chrome extension plus a hosted setup page so users do not need to run a local relay manually.
+<p align="center">
+  <strong>Let AI use the browser you're already signed into.</strong><br />
+  Real-browser MCP access with cookies, auth, tabs, and page state intact.
+</p>
+
+<p align="center">
+  <img src="public/media/cbrowse-home-hero.png" alt="cBrowse landing page preview" width="900" />
+</p>
+
+cBrowse connects MCP-capable AI agents to the actual browser profile a user already uses.
+
+It pairs a Chrome extension with a browser-specific MCP endpoint so the agent can work with existing cookies, saved logins, open tabs, and page state instead of launching a blank automation browser.
+
+- Reuse cookies, auth, and site state from the signed-in browser
+- Inspect, automate, extract, debug, and test in the same context the user sees
+- Install once, copy the MCP route, and connect any MCP-capable client
 
 ## What It Includes
 
-- A Chrome extension for page inspection and browser control.
-- A local WebSocket bridge and hosted HTTP MCP server.
-- A browser-specific pairing flow so each client targets its own browser route.
-- A hosted landing page, `llms.txt`, and a raw Codex skill.
+- A Chrome extension that pairs one browser profile to cBrowse.
+- A WebSocket bridge and HTTP MCP server that route actions into that browser.
+- A browser-specific pairing flow so each client targets the right session-aware browser.
+- A landing page, `llms.txt`, and a raw Codex skill for quick client setup.
 - Deployment scripts for a small DigitalOcean Droplet.
 
 ## How It Works
 
-1. The user loads the cBrowse extension in Chrome.
-2. The extension connects to the bridge and gets a browser-specific MCP route.
-3. The agent connects to that MCP route.
-4. The agent claims one dedicated tab and performs browser actions through MCP.
+1. The user loads the cBrowse extension in the browser profile they want to expose.
+2. The extension creates a browser-specific MCP route bound to that profile.
+3. The agent connects to that route and reuses the current cookies, auth, and page state.
+4. The agent claims tabs, inspects pages, extracts data, or debugs the app in that same browser context.
 
 ## Quick Start
 
@@ -52,7 +69,7 @@ For a packaged release, cBrowse builds from the standalone extension under:
 
 ### 4. Connect your agent
 
-Open the extension popup, copy the browser-specific MCP URL, and add it to your client.
+Open the extension popup, copy the browser-bound MCP URL, and add it to your client.
 
 For Codex:
 
@@ -130,7 +147,7 @@ Store it as base64-encoded contents of your `cbrowse-extension.pem`.
 
 ## Self-Hosting
 
-The hosted relay stack is in:
+The cBrowse bridge stack is in:
 
 - `deploy/digitalocean/`
 
@@ -146,16 +163,17 @@ See [deploy/digitalocean/README.md](/Users/cozy/Documents/cBrowse/deploy/digital
 - `extension/` Chrome extension source
 - `src/bridge/` bridge server logic
 - `src/mcp/` MCP server and HTTP transport
-- `public/` landing page and hosted setup assets
+- `public/` landing page and setup assets
 - `.agents/skills/cbrowse/` raw Codex skill
-- `deploy/digitalocean/` hosted deployment scripts
+- `deploy/digitalocean/` deployment scripts
 - `scripts/` local helper and packaging scripts
 
 ## Security Notes
 
 - The browser route is pairing-key scoped, not account-auth scoped.
+- Any connected agent can act with the same site access already present in that browser profile.
 - The extension should only connect to infrastructure you control.
-- Treat the packaged extension key and hosted MCP routes as sensitive.
+- Treat the packaged extension key and browser MCP routes as sensitive.
 
 ## License
 

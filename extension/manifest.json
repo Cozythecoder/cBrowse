@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "cBrowse",
-  "version": "0.1.0",
-  "description": "Hosted browser control extension with local bridge, MCP support, and multi-agent connectivity.",
+  "version": "0.1.1",
+  "description": "Connect MCP agents to your real signed-in browser with cookies, tabs, and page state intact.",
   "permissions": ["tabs", "tabGroups", "storage", "scripting", "activeTab", "sidePanel", "debugger"],
   "host_permissions": ["<all_urls>"],
   "background": {

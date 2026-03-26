@@ -19,8 +19,8 @@ function render(state) {
   summaryEl.textContent = [
     `Bridge: ${state.bridgeStatus}`,
     `Browser key: ${state.pairingKey ?? "Preparing…"}`,
-    `Hosted bridge: ${state.bridgeUrl}`,
-    `Hosted MCP: ${state.mcpUrl}`,
+    `Bridge URL: ${state.bridgeUrl}`,
+    `MCP URL: ${state.mcpUrl}`,
     lastActiveAgent
       ? `Last active agent: ${lastActiveAgent.name} via ${lastActiveAgent.via}`
       : "Last active agent: none yet",

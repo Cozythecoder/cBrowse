@@ -3,239 +3,536 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>cBrowse</title>
+    <title>cBrowse | Real browser access for AI agents</title>
     <meta
       name="description"
-      content="Private browser control for AI agents. Install the extension, copy your browser-specific MCP, and start working with one dedicated tab."
+      content="cBrowse lets AI agents use the browser you are already signed into, with cookies, auth, tabs, and page state intact."
     />
-    <link rel="stylesheet" href="/styles.css?v=20260326c" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="cBrowse | Real browser access for AI agents" />
+    <meta
+      property="og:description"
+      content="Let AI use the browser you are already signed into."
+    />
+    <meta property="og:image" content="/media/cbrowse-banner.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="cBrowse | Real browser access for AI agents" />
+    <meta
+      name="twitter:description"
+      content="Let AI use the browser you are already signed into."
+    />
+    <meta name="twitter:image" content="/media/cbrowse-banner.svg" />
+    <link rel="icon" href="/media/cbrowse-logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css?v=20260326f" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page-noise" aria-hidden="true"></div>
+
     <header class="site-header">
       <div class="site-shell header-shell">
-        <div class="header-row">
-          <a class="brand" href="/">
-            <span class="brand-mark" aria-hidden="true"></span>
-            <span>cBrowse</span>
-          </a>
+        <a class="brand" href="/">
+          <img class="brand-mark" src="/media/cbrowse-logo.svg" alt="" aria-hidden="true" />
+            <span class="brand-copy">
+              <span class="brand-name">cBrowse</span>
+              <span class="brand-tag">Real browser MCP</span>
+            </span>
+        </a>
 
-          <div class="header-actions">
-            <nav class="site-nav" aria-label="Primary">
-              <a href="#how">How It Works</a>
-              <a href="#features">Features</a>
-              <a href="#get-started">Get Started</a>
-              <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
-            </nav>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#flow">Flow</a>
+          <a href="#why">Why cBrowse</a>
+          <a href="#quick-start">Quick Start</a>
+          <a href="#trust">Trust</a>
+        </nav>
 
-            <button class="theme-toggle desktop-theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode">
-              Light mode
-            </button>
-          </div>
-
-          <button
-            class="mobile-menu-toggle"
-            id="mobile-menu-toggle"
-            type="button"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
-            aria-controls="mobile-menu"
+        <div class="header-actions">
+          <a
+            class="button button-ghost"
+            href="https://github.com/Cozythecoder/cBrowse"
+            target="_blank"
+            rel="noreferrer"
           >
-            <span class="menu-line" aria-hidden="true"></span>
-            <span class="menu-line" aria-hidden="true"></span>
-          </button>
+            GitHub
+          </a>
+          <a
+            class="button button-primary"
+            href="https://github.com/Cozythecoder/cBrowse/releases/latest"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Install Extension
+          </a>
         </div>
 
-        <div class="mobile-menu" id="mobile-menu" hidden>
-          <nav class="mobile-nav" aria-label="Mobile navigation">
-            <a href="#how">How It Works</a>
-            <a href="#features">Features</a>
-            <a href="#get-started">Get Started</a>
-            <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
-          </nav>
+        <button
+          class="mobile-menu-toggle"
+          id="mobile-menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open navigation menu"
+        >
+          <span class="menu-label">Menu</span>
+          <span class="menu-icon" aria-hidden="true">
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+          </span>
+        </button>
+      </div>
 
-          <button class="theme-toggle mobile-theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode">
-            Light mode
-          </button>
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <nav class="mobile-nav" aria-label="Mobile navigation">
+          <a href="#flow">Flow</a>
+          <a href="#why">Why cBrowse</a>
+          <a href="#quick-start">Quick Start</a>
+          <a href="#trust">Trust</a>
+          <a
+            href="https://github.com/Cozythecoder/cBrowse"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+        </nav>
+
+        <div class="mobile-actions">
+          <a
+            class="button button-primary"
+            href="https://github.com/Cozythecoder/cBrowse/releases/latest"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Install Extension
+          </a>
+          <a
+            class="button button-ghost"
+            href="https://github.com/Cozythecoder/cBrowse/issues"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open Issues
+          </a>
         </div>
       </div>
     </header>
 
-    <main class="site-shell page">
-      <section class="hero" id="top">
-        <div class="hero-copy">
-          <p class="eyebrow">Hosted cBrowse MCP for private browser control</p>
-          <h1>Let your AI agent use one clean cBrowse tab, not your whole browser.</h1>
-          <p class="lede">
-            Load the extension, copy your private MCP route, and keep agent work scoped to a
-            dedicated browser tab.
-          </p>
+    <main id="main">
+      <section class="hero">
+        <div class="hero-glow hero-glow-left" aria-hidden="true"></div>
+        <div class="hero-glow hero-glow-right" aria-hidden="true"></div>
 
-          <div class="hero-actions">
-            <button class="button button-primary" data-copy-target="mcp-endpoint">Copy MCP</button>
-            <a class="button button-secondary" href="#get-started">Get Started</a>
+        <div class="site-shell hero-layout">
+          <div class="hero-copy">
+            <p class="section-index" data-reveal>Real browser access · persistent auth · open source</p>
+            <h1 data-reveal style="--delay: 0.08s;">
+              Your real browser.
+              <span>Agent-ready.</span>
+            </h1>
+            <p class="hero-lede" data-reveal style="--delay: 0.14s;">
+              cBrowse lets any MCP-capable agent use the browser you already use, with cookies,
+              auth, saved sessions, and page state intact. No relogin loop. No sterile sandbox.
+            </p>
+
+            <div class="hero-proof" data-reveal style="--delay: 0.2s;">
+              <span>Cookies and auth stay intact</span>
+              <span>Works with any MCP client</span>
+              <span>One install, any MCP agent</span>
+            </div>
+
+            <div class="hero-actions" data-reveal style="--delay: 0.24s;">
+              <a
+                class="button button-primary"
+                href="https://github.com/Cozythecoder/cBrowse/releases/latest"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Install Extension
+              </a>
+              <button
+                class="button button-secondary"
+                type="button"
+                data-copy-target="hero-mcp-endpoint"
+                data-requires-pairing
+              >
+                Copy MCP Route
+              </button>
+            </div>
+
+            <div class="hero-links" data-reveal style="--delay: 0.28s;">
+              <a
+                href="https://github.com/Cozythecoder/cBrowse"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Public repo
+              </a>
+              <a
+                href="https://github.com/Cozythecoder/cBrowse/issues"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Report issue
+              </a>
+              <a href="#quick-start">Setup details</a>
+            </div>
           </div>
 
-          <div class="hero-notes">
-            <span>Private route</span>
-            <span>Dedicated tabs</span>
-            <span>Hosted relay</span>
+          <div class="hero-stage" data-reveal style="--delay: 0.18s;">
+            <div class="stage-frame" data-parallax>
+              <div class="window-shell">
+                <div class="window-bar">
+                  <div class="window-dots" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="window-chip">
+                    <span class="chip-label">Browser key</span>
+                    <span id="pairing-chip" class="chip-value">Awaiting browser key</span>
+                  </div>
+
+                  <div class="window-chip window-chip-live">
+                    <span class="signal-dot" id="status-dot"></span>
+                    <span id="status-text">Checking browser link…</span>
+                  </div>
+                </div>
+
+                <div class="stage-grid">
+                  <article class="stage-panel stage-panel-route">
+                    <p class="panel-label">Browser MCP route</p>
+                    <code id="hero-mcp-endpoint" class="code-block">Loading…</code>
+                    <p id="pairing-note" class="panel-copy">
+                      Open the extension to create a browser-bound route.
+                    </p>
+
+                    <div class="terminal-lines" aria-hidden="true">
+                      <div class="terminal-line" style="--index: 0;">
+                        <span class="terminal-prompt">$</span> extension paired
+                      </div>
+                      <div class="terminal-line" style="--index: 1;">
+                        <span class="terminal-prompt">$</span> signed-in state intact
+                      </div>
+                      <div class="terminal-line" style="--index: 2;">
+                        <span class="terminal-prompt">$</span> agent route ready
+                      </div>
+                    </div>
+                  </article>
+
+                  <div class="stage-surface">
+                    <article class="node-card" data-node="extension">
+                      <p class="node-label">Browser profile</p>
+                      <h3>Keeps your sign-in state</h3>
+                      <p>Reuse cookies, saved auth, and page context from the browser you actually use.</p>
+                    </article>
+
+                    <article class="node-card" data-node="agent">
+                      <p class="node-label">MCP agent</p>
+                      <h3>Acts like the user</h3>
+                      <p>Navigate, inspect, extract, and automate in the exact browser context you already have.</p>
+                    </article>
+
+                    <article class="node-card" data-node="relay">
+                      <p class="node-label">Session view</p>
+                      <h3>Stays visible</h3>
+                      <p>Connection health, active task, and handoff stay readable while the agent works.</p>
+                    </article>
+
+                    <article class="node-card" data-node="tab">
+                      <p class="node-label">Claimed tabs</p>
+                      <h3>Keeps work contained</h3>
+                      <p>Give the agent the tabs you want while the rest of the browser stays untouched.</p>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <article class="phone-card">
+                <p class="panel-label">Session view</p>
+                <p id="status-meta" class="phone-copy">Loading browser link…</p>
+                <p id="status-session" class="phone-session">No active agent task yet.</p>
+
+                <div class="phone-rail">
+                  <span>Claim tab</span>
+                  <span>Run task</span>
+                  <span>Release cleanly</span>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="hero-stack">
-          <article class="surface route-surface">
-            <div class="panel-row">
-              <p class="panel-label">cBrowse MCP Route</p>
-              <button class="button button-inline" data-copy-target="hero-mcp-endpoint">Copy</button>
-            </div>
-            <code id="hero-mcp-endpoint" class="code-block">Loading…</code>
-            <div class="hero-visual">
-              <img src="/media/cbrowse-hero.svg" alt="cBrowse relay overview" />
-            </div>
-          </article>
+      <section class="section" id="flow">
+        <div class="site-shell">
+          <div class="section-head centered" data-reveal>
+            <p class="section-index">/01 FLOW</p>
+            <h2>Install. Pair. Use your session.</h2>
+            <p class="section-copy">
+              The install stays short. The browser stays signed in. The agent gets the same context
+              you already have.
+            </p>
+          </div>
 
-          <div class="hero-rail">
-            <article class="surface status-surface">
-              <div class="status-head">
-                <span class="signal-dot" id="status-dot"></span>
-                <span id="status-text">Checking bridge…</span>
-              </div>
-              <p id="status-meta" class="status-copy">Loading browser route…</p>
-              <p id="status-session" class="status-copy status-strong">No active browser session yet.</p>
+          <div class="step-grid">
+            <article class="step-card" data-reveal style="--delay: 0.04s;">
+              <p class="step-index">/01</p>
+              <h3>Install in your real browser</h3>
+              <p>Load the extension in the browser profile that already has the sites you need.</p>
             </article>
 
-            <article class="surface">
-              <div class="panel-row">
-                <p class="panel-label">Codex</p>
-                <button class="button button-inline" data-copy-target="codex-command">Copy</button>
+            <article class="step-card" data-reveal style="--delay: 0.1s;">
+              <p class="step-index">/02</p>
+              <h3>Copy the browser route</h3>
+              <p>Each browser gets its own MCP endpoint, so the agent connects to your real session.</p>
+            </article>
+
+            <article class="step-card" data-reveal style="--delay: 0.16s;">
+              <p class="step-index">/03</p>
+              <h3>Hand it to the agent</h3>
+              <p>Inspect, scrape, analyze, debug, or test with the cookies and page state already there.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="why">
+        <div class="site-shell">
+          <div class="section-head centered" data-reveal>
+            <p class="section-index">/02 WHY CBROWSE</p>
+            <h2>Built for real browser sessions, not empty automation sandboxes.</h2>
+            <p class="section-copy">
+              cBrowse is for agents that need the same cookies, auth, tabs, and page state you already have.
+            </p>
+          </div>
+
+          <div class="benefit-grid">
+            <article class="benefit-card" data-reveal style="--delay: 0.04s;">
+              <p class="benefit-kicker">Persistent auth</p>
+              <h3>Skip the relogin loop</h3>
+              <p>The agent works with the accounts and sessions already open in that browser profile.</p>
+            </article>
+
+            <article class="benefit-card" data-reveal style="--delay: 0.1s;">
+              <p class="benefit-kicker">Exact browser context</p>
+              <h3>See what the user sees</h3>
+              <p>Reuse the same storage, cookies, and client-side state that shape the actual page.</p>
+            </article>
+
+            <article class="benefit-card" data-reveal style="--delay: 0.16s;">
+              <p class="benefit-kicker">Fast extraction</p>
+              <h3>Pull data from real surfaces</h3>
+              <p>Read dashboards, docs, social pages, and internal tools you already have access to.</p>
+            </article>
+
+            <article class="benefit-card" data-reveal style="--delay: 0.22s;">
+              <p class="benefit-kicker">Developer workflows</p>
+              <h3>Debug and test faster</h3>
+              <p>Reproduce signed-in bugs, inspect app state, and test web apps in the environment that matters.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-contrast" id="quick-start">
+        <div class="site-shell connect-layout">
+          <div class="connect-copy">
+            <div class="section-head" data-reveal>
+              <p class="section-index">/03 QUICK START</p>
+              <h2>Install once, then hand any MCP agent your real signed-in browser.</h2>
+              <p class="section-copy">
+                The setup stays here: browser route, Codex command, cBrowse skill, and a prompt
+                that tells the agent to reuse the session already in this browser.
+              </p>
+            </div>
+
+            <div class="connect-list" data-reveal style="--delay: 0.08s;">
+              <article class="connect-list-item">
+                <span>/01</span>
+                <p>Install the latest extension build in the browser profile you want to expose.</p>
+              </article>
+              <article class="connect-list-item">
+                <span>/02</span>
+                <p>Use the browser-bound MCP route for that profile only.</p>
+              </article>
+              <article class="connect-list-item">
+                <span>/03</span>
+                <p>Attach the cBrowse skill if your client supports extra browser instructions.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="connect-stack">
+            <article class="info-card info-card-wide" data-reveal style="--delay: 0.04s;">
+              <div class="card-head">
+                <p class="panel-label">Browser-bound MCP route</p>
+                <button
+                  class="button button-inline"
+                  type="button"
+                  data-copy-target="mcp-endpoint"
+                  data-requires-pairing
+                >
+                  Copy
+                </button>
+              </div>
+              <code id="mcp-endpoint" class="code-block">Loading…</code>
+              <p id="route-note" class="card-copy">
+                Open this page from the extension to get your browser-specific route.
+              </p>
+            </article>
+
+            <article class="info-card" data-reveal style="--delay: 0.1s;">
+              <div class="card-head">
+                <p class="panel-label">Codex install command</p>
+                <button
+                  class="button button-inline"
+                  type="button"
+                  data-copy-target="codex-command"
+                  data-requires-pairing
+                >
+                  Copy
+                </button>
               </div>
               <code id="codex-command" class="code-block">Loading…</code>
             </article>
-          </div>
-        </div>
-      </section>
 
-      <section class="section" id="how">
-        <div class="section-head">
-          <p class="section-label">How It Works</p>
-          <h2>Three steps. No local relay dance.</h2>
-          <p class="section-copy">
-            The flow stays short: install the extension, connect your agent, then claim one tab.
-          </p>
-        </div>
-
-        <div class="steps">
-          <article>
-            <p class="step-index">01</p>
-            <h3>Load the extension</h3>
-            <p>The extension keeps the browser side connected and exposes your private route.</p>
-          </article>
-          <article>
-            <p class="step-index">02</p>
-            <h3>Copy the MCP</h3>
-            <p>Use your browser-specific MCP URL so the agent targets your browser only.</p>
-          </article>
-          <article>
-            <p class="step-index">03</p>
-            <h3>Claim a tab</h3>
-            <p>Each task gets its own tab group and a cleaner handoff for browser work.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="features">
-        <div class="section-head">
-          <p class="section-label">Features</p>
-          <h2>Built for clean cBrowse agent-browser handoff.</h2>
-        </div>
-
-        <div class="features">
-          <article>
-            <h3>Live bridge status</h3>
-            <p>See whether the connected browser is ready before the agent starts acting.</p>
-          </article>
-          <article>
-            <h3>Dark by default</h3>
-            <p>Starts in dark mode and supports a light mode toggle when you want the page brighter.</p>
-          </article>
-          <article>
-            <h3>Skill + llms.txt</h3>
-            <p>Use the hosted MCP directly or attach the cBrowse skill when your client supports it.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section setup-section" id="get-started">
-        <div class="section-head">
-          <p class="section-label">Get Started</p>
-          <h2>Install once. Copy once. Start work.</h2>
-          <p class="section-copy">
-            The setup is just extension, MCP, and an optional cBrowse skill layer.
-          </p>
-        </div>
-
-        <div class="setup-grid">
-          <article class="setup-copy">
-            <p class="setup-index">/01 INSTALL</p>
-            <p>Load the unpacked extension and confirm the bridge is connected.</p>
-
-            <p class="setup-index">/02 CONNECT</p>
-            <p>
-              Add the browser-specific MCP to your agent. Use a stable `sessionId` and short
-              `taskName` when you want cleaner tab groups.
-            </p>
-
-            <p class="setup-index">/03 OPTIONAL SKILL</p>
-            <p>Attach the hosted cBrowse skill when your client supports extra browser instructions.</p>
-          </article>
-
-          <div class="setup-stack">
-            <article class="surface">
-              <div class="panel-row">
-                <p class="panel-label">MCP URL</p>
-                <button class="button button-inline" data-copy-target="mcp-endpoint">Copy</button>
-              </div>
-              <code id="mcp-endpoint" class="code-block">Loading…</code>
-            </article>
-
-            <article class="surface">
-              <div class="panel-row">
-                <p class="panel-label">Skill</p>
-                <div class="panel-actions">
-                  <button class="button button-inline" data-copy-target="skill-url">Copy URL</button>
-                  <button class="button button-inline" id="copy-skill-text">Copy text</button>
+            <article class="info-card" data-reveal style="--delay: 0.16s;">
+              <div class="card-head">
+                <p class="panel-label">cBrowse skill</p>
+                <div class="card-actions">
+                  <button class="button button-inline" type="button" data-copy-target="skill-url">
+                    Copy URL
+                  </button>
+                  <button class="button button-inline" type="button" id="copy-skill-text">
+                    Copy text
+                  </button>
                 </div>
               </div>
               <code id="skill-url" class="code-block">Loading…</code>
             </article>
+
+            <article class="info-card info-card-wide" data-reveal style="--delay: 0.22s;">
+              <div class="card-head">
+                <p class="panel-label">Machine-readable setup</p>
+                <a class="mini-link" href="/llms.txt" target="_blank" rel="noreferrer">Open llms.txt</a>
+              </div>
+              <code id="llms-url" class="code-block code-block-soft">Loading…</code>
+              <p id="setup-prompt" class="card-copy setup-copy">Loading…</p>
+            </article>
           </div>
         </div>
+      </section>
 
-        <div class="resource-strip">
-          <a href="/cbrowse-skill.md" target="_blank" rel="noreferrer">Skill</a>
-          <a href="/llms.txt" target="_blank" rel="noreferrer">llms.txt</a>
-          <span id="llms-url" class="hidden-copy">Loading…</span>
-          <span id="setup-prompt" class="hidden-copy">Loading…</span>
+      <section class="section" id="trust">
+        <div class="site-shell">
+          <div class="section-head centered" data-reveal>
+            <p class="section-index">/04 TRUST + INFRA</p>
+            <h2>Open source repo. Public releases. Self-host when needed.</h2>
+            <p class="section-copy">
+              Inspect the code, install the packaged extension, or run the bridge on your own infrastructure.
+            </p>
+          </div>
+
+          <div class="trust-grid">
+            <a
+              class="trust-card"
+              href="https://github.com/Cozythecoder/cBrowse/releases/latest"
+              target="_blank"
+              rel="noreferrer"
+              data-reveal
+              style="--delay: 0.04s;"
+            >
+              <p class="benefit-kicker">Releases</p>
+              <h3>Install the latest packaged extension.</h3>
+              <p>Download the build for the browser you want to hand to an agent.</p>
+            </a>
+
+            <a
+              class="trust-card"
+              href="https://github.com/Cozythecoder/cBrowse"
+              target="_blank"
+              rel="noreferrer"
+              data-reveal
+              style="--delay: 0.1s;"
+            >
+              <p class="benefit-kicker">Source</p>
+              <h3>Inspect the extension and MCP server first.</h3>
+              <p>The pairing flow, tab controls, and bridge code stay readable in the public repo.</p>
+            </a>
+
+            <a
+              class="trust-card"
+              href="https://github.com/Cozythecoder/cBrowse/tree/main/deploy/digitalocean"
+              target="_blank"
+              rel="noreferrer"
+              data-reveal
+              style="--delay: 0.16s;"
+            >
+              <p class="benefit-kicker">Deploy</p>
+              <h3>Self-host the bridge when you need full control.</h3>
+              <p>DigitalOcean and Caddy deployment files are included for teams that want their own backend surface.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section final-cta">
+        <div class="site-shell cta-shell" data-reveal>
+          <div>
+            <p class="section-index">/05 READY TO RUN</p>
+            <h2>Install the extension and let your agent work inside the browser you are already signed into.</h2>
+          </div>
+
+          <div class="cta-actions">
+            <a
+              class="button button-primary"
+              href="https://github.com/Cozythecoder/cBrowse/releases/latest"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Install Extension
+            </a>
+            <a
+              class="button button-ghost"
+              href="https://github.com/Cozythecoder/cBrowse"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View GitHub
+            </a>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="site-shell footer-row">
+      <div class="site-shell footer-shell">
         <div class="footer-brand">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Open source. MIT licensed.</span>
+          <img class="footer-mark" src="/media/cbrowse-logo.svg" alt="" aria-hidden="true" />
+          <div>
+            <p>cBrowse</p>
+            <span>Open source. MIT licensed.</span>
+          </div>
         </div>
 
         <div class="footer-links">
-          <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://github.com/issues" target="_blank" rel="noreferrer">Issues</a>
+          <a href="https://github.com/Cozythecoder/cBrowse" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://github.com/Cozythecoder/cBrowse/issues" target="_blank" rel="noreferrer">Issues</a>
+          <a href="https://github.com/Cozythecoder/cBrowse/releases/latest" target="_blank" rel="noreferrer">Releases</a>
           <a href="/cbrowse-skill.md" target="_blank" rel="noreferrer">Skill</a>
           <a href="/llms.txt" target="_blank" rel="noreferrer">llms.txt</a>
         </div>
       </div>
     </footer>
 
-    <script type="module" src="/app.js?v=20260326c"></script>
+    <script type="module" src="/app.js?v=20260326f"></script>
   </body>
 </html>

@@ -2,26 +2,28 @@ const origin = window.location.origin;
 const params = new URLSearchParams(window.location.search);
 const pairingKey = params.get("pairingKey")?.trim() || "";
 const hasPairingKey = pairingKey.length > 0;
-const requestedTheme = params.get("theme")?.trim().toLowerCase();
-const themeToggles = document.querySelectorAll("[data-theme-toggle]");
-const themeStorageKey = "cbrowse-theme";
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
 const mobileMenu = document.getElementById("mobile-menu");
 const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
-const mobileMediaQuery = window.matchMedia("(max-width: 720px)");
+const mobileMenuLabel = mobileMenuToggle?.querySelector(".menu-label");
+const mobileMediaQuery = window.matchMedia("(max-width: 860px)");
 
-const mcpUrl = hasPairingKey ? `${origin}/mcp/${encodeURIComponent(pairingKey)}` : `${origin}/mcp/<your-browser-key>`;
+const mcpUrl = hasPairingKey
+  ? `${origin}/mcp/${encodeURIComponent(pairingKey)}`
+  : `${origin}/mcp/<your-browser-key>`;
 const skillUrl = `${origin}/cbrowse-skill.md`;
 const llmsUrl = `${origin}/llms.txt`;
 const codexCommand = hasPairingKey
   ? `codex mcp add cbrowse --url ${mcpUrl}`
-  : "Load the extension first to get your browser-specific MCP URL.";
+  : "Open the extension first to generate the MCP route for this browser profile.";
 const setupPrompt = hasPairingKey
-  ? `Connect the hosted cbrowse MCP at "${mcpUrl}". If your client supports extra instructions, use the cBrowse skill at "${skillUrl}". Then claim a dedicated browser tab before acting.`
-  : "Open this page from the extension to get your browser-specific MCP URL.";
+  ? `Connect cBrowse at "${mcpUrl}". If your client supports extra instructions, use the cBrowse skill at "${skillUrl}". Reuse the cookies, auth, and page state already present in the browser that issued this route. Claim a tab before destructive actions.`
+  : "Open this page from the extension to get the browser-bound MCP route for the browser profile you want the agent to use.";
 
 const values = {
-  "mcp-endpoint": mcpUrl,
   "hero-mcp-endpoint": mcpUrl,
+  "mcp-endpoint": mcpUrl,
   "skill-url": skillUrl,
   "llms-url": llmsUrl,
   "codex-command": codexCommand,
@@ -35,35 +37,46 @@ for (const [id, text] of Object.entries(values)) {
   }
 }
 
-function resolveInitialTheme() {
-  if (requestedTheme === "light" || requestedTheme === "dark") {
-    return requestedTheme;
+function shortPairingKey(value) {
+  if (!value) {
+    return "Awaiting browser key";
   }
 
-  const storedTheme = window.localStorage.getItem(themeStorageKey);
-  return storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+  return value.length > 22 ? `${value.slice(0, 12)}...${value.slice(-6)}` : value;
 }
 
-function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
+function syncPairingState() {
+  const pairingChip = document.getElementById("pairing-chip");
+  const pairingNote = document.getElementById("pairing-note");
+  const routeNote = document.getElementById("route-note");
 
-  for (const themeToggle of themeToggles) {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    themeToggle.textContent = nextTheme === "light" ? "Light mode" : "Dark mode";
-    themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
+  if (pairingChip) {
+    pairingChip.textContent = shortPairingKey(pairingKey);
+  }
+
+  if (pairingNote) {
+    pairingNote.textContent = hasPairingKey
+      ? "This route belongs to the browser that generated it and reuses its current session state."
+      : "Open the extension to create a browser-bound route.";
+  }
+
+  if (routeNote) {
+    routeNote.textContent = hasPairingKey
+      ? "Use this route only with the browser profile that issued it."
+      : "Open this page from the extension to get the route for this browser profile.";
+  }
+
+  for (const button of document.querySelectorAll("[data-requires-pairing]")) {
+    if (!button.dataset.defaultLabel) {
+      button.dataset.defaultLabel = button.textContent?.trim() || "Copy";
+    }
+
+    button.disabled = !hasPairingKey;
+    button.textContent = hasPairingKey ? button.dataset.defaultLabel : "Open extension first";
   }
 }
 
-const activeTheme = resolveInitialTheme();
-applyTheme(activeTheme);
-
-for (const themeToggle of themeToggles) {
-  themeToggle.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
-    window.localStorage.setItem(themeStorageKey, nextTheme);
-    applyTheme(nextTheme);
-  });
-}
+syncPairingState();
 
 function closeMobileMenu() {
   if (!mobileMenu || !mobileMenuToggle) {
@@ -74,6 +87,9 @@ function closeMobileMenu() {
   delete mobileMenu.dataset.open;
   mobileMenuToggle.setAttribute("aria-expanded", "false");
   mobileMenuToggle.setAttribute("aria-label", "Open navigation menu");
+  if (mobileMenuLabel) {
+    mobileMenuLabel.textContent = "Menu";
+  }
 }
 
 function openMobileMenu() {
@@ -85,13 +101,12 @@ function openMobileMenu() {
   mobileMenu.dataset.open = "true";
   mobileMenuToggle.setAttribute("aria-expanded", "true");
   mobileMenuToggle.setAttribute("aria-label", "Close navigation menu");
+  if (mobileMenuLabel) {
+    mobileMenuLabel.textContent = "Close";
+  }
 }
 
 function syncMobileMenu() {
-  if (!mobileMenu) {
-    return;
-  }
-
   if (!mobileMediaQuery.matches) {
     closeMobileMenu();
   }
@@ -108,18 +123,41 @@ mobileMenuToggle?.addEventListener("click", () => {
 });
 
 for (const link of document.querySelectorAll(".mobile-nav a")) {
-  link.addEventListener("click", () => {
-    closeMobileMenu();
-  });
+  link.addEventListener("click", closeMobileMenu);
 }
+
+document.addEventListener("click", (event) => {
+  if (!mobileMediaQuery.matches || mobileMenu?.dataset.open !== "true") {
+    return;
+  }
+
+  if (!mobileMenu.contains(event.target) && !mobileMenuToggle?.contains(event.target)) {
+    closeMobileMenu();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeMobileMenu();
+  }
+});
 
 mobileMediaQuery.addEventListener("change", syncMobileMenu);
 syncMobileMenu();
 
 async function copyText(button, text) {
-  await navigator.clipboard.writeText(text);
+  if (!text || button.disabled) {
+    return;
+  }
+
   const previous = button.textContent;
-  button.textContent = "Copied";
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = "Copied";
+  } catch {
+    button.textContent = "Failed";
+  }
+
   window.setTimeout(() => {
     button.textContent = previous;
   }, 1200);
@@ -133,14 +171,20 @@ for (const button of document.querySelectorAll("[data-copy-target]")) {
       return;
     }
 
-    await copyText(button, target.textContent ?? "");
+    await copyText(button, target.textContent?.trim() || "");
   });
 }
 
 document.getElementById("copy-skill-text")?.addEventListener("click", async (event) => {
-  const response = await fetch(skillUrl);
+  const button = event.currentTarget;
+  const response = await fetch(skillUrl, { cache: "no-store" });
+  if (!response.ok) {
+    await copyText(button, "");
+    return;
+  }
+
   const text = await response.text();
-  await copyText(event.currentTarget, text);
+  await copyText(button, text);
 });
 
 const statusDot = document.getElementById("status-dot");
@@ -157,26 +201,32 @@ function renderStatus(payload) {
   const transport = sessionAgent?.via || connectedAgent?.via || "mcp";
 
   statusDot.dataset.state = connected ? "connected" : "disconnected";
-  statusText.textContent = connected ? "Bridge connected" : hasPairingKey ? "Waiting for your extension" : "Waiting for a browser key";
+
+  if (!hasPairingKey) {
+    statusText.textContent = "Waiting for browser key";
+    statusMeta.textContent = "Open this page from the extension to unlock a browser-bound MCP route.";
+    statusSession.textContent = "No browser route on this page yet.";
+    return;
+  }
+
+  statusText.textContent = connected ? "Browser linked" : "Waiting for extension";
   statusMeta.textContent = connected
     ? `${actor} via ${transport}${payload?.bridge?.extensionVersion ? ` · extension ${payload.bridge.extensionVersion}` : ""}`
-    : hasPairingKey
-      ? "This route is reserved for one browser."
-      : "Open this page from the extension to get your private route.";
+    : "This route is reserved for one signed-in browser profile.";
 
   if (session) {
     statusSession.textContent = `${session.taskName || "cBrowse task"} · ${session.status}`;
   } else if (connected) {
-    statusSession.textContent = "Ready for the next claimed tab.";
+    statusSession.textContent = "Ready for the next session-aware task.";
   } else {
-    statusSession.textContent = hasPairingKey
-      ? "No live browser session yet."
-      : "No private browser key on this page.";
+    statusSession.textContent = "No active agent task yet.";
   }
 }
 
 async function refreshStatus() {
-  const statusPath = hasPairingKey ? `/api/status?pairingKey=${encodeURIComponent(pairingKey)}` : "/api/status";
+  const statusPath = hasPairingKey
+    ? `/api/status?pairingKey=${encodeURIComponent(pairingKey)}`
+    : "/api/status";
 
   try {
     const response = await fetch(statusPath, { cache: "no-store" });
@@ -187,11 +237,81 @@ async function refreshStatus() {
     renderStatus(await response.json());
   } catch {
     statusDot.dataset.state = "disconnected";
-    statusText.textContent = "Status unavailable";
-    statusMeta.textContent = "The hosted relay is up, but the status endpoint did not answer cleanly.";
-    statusSession.textContent = "Retry in a moment.";
+    statusText.textContent = hasPairingKey ? "Status unavailable" : "Waiting for browser key";
+    statusMeta.textContent = hasPairingKey
+      ? "The cBrowse bridge did not answer cleanly."
+      : "Open this page from the extension to unlock a browser-bound MCP route.";
+    statusSession.textContent = hasPairingKey ? "Retry in a moment." : "No browser route on this page yet.";
   }
 }
 
+function initReveals() {
+  const revealTargets = document.querySelectorAll("[data-reveal]");
+  if (prefersReducedMotion.matches) {
+    for (const target of revealTargets) {
+      target.dataset.revealed = "true";
+    }
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries, currentObserver) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) {
+          continue;
+        }
+
+        entry.target.dataset.revealed = "true";
+        currentObserver.unobserve(entry.target);
+      }
+    },
+    {
+      threshold: 0.16,
+      rootMargin: "0px 0px -6% 0px",
+    }
+  );
+
+  for (const target of revealTargets) {
+    observer.observe(target);
+  }
+}
+
+function initParallax() {
+  const frame = document.querySelector("[data-parallax]");
+  const hero = document.querySelector(".hero");
+  const disableParallax =
+    prefersReducedMotion.matches ||
+    window.matchMedia("(max-width: 960px)").matches ||
+    window.matchMedia("(pointer: coarse)").matches;
+
+  if (!frame || !hero || disableParallax) {
+    return;
+  }
+
+  let ticking = false;
+
+  const updateParallax = () => {
+    const rect = hero.getBoundingClientRect();
+    const progress = Math.min(Math.max((0 - rect.top) * 0.08, 0), 36);
+    frame.style.setProperty("--parallax-shift", `${progress}px`);
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (ticking) {
+      return;
+    }
+
+    ticking = true;
+    window.requestAnimationFrame(updateParallax);
+  };
+
+  updateParallax();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+}
+
+initReveals();
+initParallax();
 void refreshStatus();
-window.setInterval(refreshStatus, 10000);
+window.setInterval(refreshStatus, 12000);
