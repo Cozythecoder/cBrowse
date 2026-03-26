@@ -73,8 +73,7 @@ pre,
 .window-chip,
 .button,
 .hero-proof,
-.footer-links,
-.phone-rail {
+.footer-links {
   font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
 }
 
@@ -142,8 +141,7 @@ pre,
 .card-actions,
 .footer-brand,
 .footer-links,
-.cta-actions,
-.phone-rail {
+.cta-actions {
   display: flex;
   align-items: center;
 }
@@ -386,7 +384,8 @@ pre,
 .trust-grid,
 .footer-shell,
 .stage-grid,
-.stage-surface {
+.stage-stack,
+.stage-list {
   display: grid;
 }
 
@@ -444,11 +443,9 @@ h3 {
 .section-copy,
 .panel-copy,
 .card-copy,
-.phone-copy,
-.phone-session,
+.status-copy,
 .step-card p:last-child,
 .benefit-card p:last-child,
-.node-card p:last-child,
 .trust-card p:last-child,
 .connect-list-item p {
   margin: 0;
@@ -468,7 +465,7 @@ h3 {
 }
 
 .hero-proof span,
-.phone-rail span {
+.status-rail span {
   padding: 9px 12px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.03);
@@ -587,8 +584,7 @@ h3 {
 .step-card,
 .benefit-card,
 .trust-card,
-.node-card,
-.phone-card,
+.stage-card,
 .connect-list-item,
 .cta-shell {
   border: 2px solid var(--line);
@@ -600,8 +596,7 @@ h3 {
 .step-card,
 .benefit-card,
 .trust-card,
-.node-card,
-.phone-card,
+.stage-card,
 .cta-shell {
   box-shadow: var(--offset-shadow-soft);
 }
@@ -611,8 +606,7 @@ h3 {
 .step-card,
 .benefit-card,
 .trust-card,
-.node-card,
-.phone-card {
+.stage-card {
   padding: 20px;
 }
 
@@ -656,32 +650,43 @@ h3 {
   color: var(--accent);
 }
 
-.stage-surface {
-  position: relative;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.stage-stack {
   gap: 16px;
   align-content: start;
 }
 
-.stage-surface::before {
-  content: "";
-  position: absolute;
-  inset: 12% 16%;
-  border: 1px solid rgba(255, 139, 61, 0.12);
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 139, 61, 0.08), transparent 70%);
-  filter: blur(8px);
-}
-
-.node-card {
-  position: relative;
-  z-index: 1;
+.stage-card {
   background:
-    linear-gradient(180deg, rgba(255, 139, 61, 0.08), rgba(255, 139, 61, 0) 34%),
+    linear-gradient(180deg, rgba(255, 139, 61, 0.06), rgba(255, 139, 61, 0) 34%),
     rgba(9, 15, 22, 0.88);
 }
 
-.node-card h3,
+.stage-list {
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.stage-list-item {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stage-list-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.stage-list-title,
+.status-session,
+.step-card h3,
+.benefit-card h3,
+.trust-card h3 {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.stage-list-title,
+.status-session,
 .step-card h3,
 .benefit-card h3,
 .trust-card h3 {
@@ -690,29 +695,20 @@ h3 {
   line-height: 1;
 }
 
-.phone-card {
-  position: absolute;
-  right: -22px;
-  bottom: -30px;
-  width: min(320px, 48%);
-  background:
-    linear-gradient(180deg, rgba(255, 139, 61, 0.16), rgba(255, 139, 61, 0) 44%),
-    #101923;
-  box-shadow: var(--offset-shadow), var(--surface-shadow);
-  animation: phone-float 6s ease-in-out infinite;
+.stage-list-item p:last-child {
+  margin-bottom: 0;
 }
 
-.phone-copy {
+.status-copy {
   margin-top: 12px;
 }
 
-.phone-session {
+.status-session {
   margin-top: 8px;
-  color: var(--text);
-  font-weight: 500;
+  font-size: 1.3rem;
 }
 
-.phone-rail {
+.status-rail {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 18px;
@@ -915,17 +911,6 @@ h3 {
   }
 }
 
-@keyframes phone-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 @media (hover: hover) and (pointer: fine) {
   .button:hover {
     transform: translate(-2px, -2px);
@@ -969,15 +954,6 @@ h3 {
   .step-grid,
   .trust-grid {
     grid-template-columns: 1fr;
-  }
-
-  .phone-card {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    width: 100%;
-    margin-top: 18px;
-    animation: none;
   }
 }
 
@@ -1050,7 +1026,7 @@ h3 {
   .benefit-card,
   .info-card,
   .trust-card,
-  .phone-card,
+  .stage-card,
   .cta-shell {
     padding: 18px;
   }
@@ -1072,7 +1048,7 @@ h3 {
     gap: 16px;
   }
 
-  .stage-surface,
+  .stage-stack,
   .benefit-grid,
   .connect-stack {
     grid-template-columns: minmax(0, 1fr);
@@ -1084,7 +1060,7 @@ h3 {
   }
 
   .hero-proof span,
-  .phone-rail span {
+  .status-rail span {
     width: 100%;
   }
 }

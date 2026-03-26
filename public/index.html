@@ -227,45 +227,39 @@
                     </div>
                   </article>
 
-                  <div class="stage-surface">
-                    <article class="node-card" data-node="extension">
-                      <p class="node-label">Browser profile</p>
-                      <h3>Keeps your sign-in state</h3>
-                      <p>Reuse cookies, saved auth, and page context from the browser you actually use.</p>
+                  <div class="stage-stack">
+                    <article class="stage-card stage-card-summary">
+                      <p class="panel-label">What cBrowse keeps</p>
+                      <div class="stage-list">
+                        <div class="stage-list-item">
+                          <p class="stage-list-title">Signed-in state</p>
+                          <p>Cookies, auth, and saved app state stay intact.</p>
+                        </div>
+                        <div class="stage-list-item">
+                          <p class="stage-list-title">Real browser context</p>
+                          <p>Inspect, extract, and automate in the browser the user already uses.</p>
+                        </div>
+                        <div class="stage-list-item">
+                          <p class="stage-list-title">Contained tab control</p>
+                          <p>Claim only the tabs you want the agent to touch.</p>
+                        </div>
+                      </div>
                     </article>
 
-                    <article class="node-card" data-node="agent">
-                      <p class="node-label">MCP agent</p>
-                      <h3>Acts like the user</h3>
-                      <p>Navigate, inspect, extract, and automate in the exact browser context you already have.</p>
-                    </article>
+                    <article class="stage-card status-panel">
+                      <p class="panel-label">Session view</p>
+                      <p id="status-meta" class="status-copy">Loading browser link…</p>
+                      <p id="status-session" class="status-session">No active agent task yet.</p>
 
-                    <article class="node-card" data-node="relay">
-                      <p class="node-label">Session view</p>
-                      <h3>Stays visible</h3>
-                      <p>Connection health, active task, and handoff stay readable while the agent works.</p>
-                    </article>
-
-                    <article class="node-card" data-node="tab">
-                      <p class="node-label">Claimed tabs</p>
-                      <h3>Keeps work contained</h3>
-                      <p>Give the agent the tabs you want while the rest of the browser stays untouched.</p>
+                      <div class="status-rail">
+                        <span>Claim tab</span>
+                        <span>Run task</span>
+                        <span>Release cleanly</span>
+                      </div>
                     </article>
                   </div>
                 </div>
               </div>
-
-              <article class="phone-card">
-                <p class="panel-label">Session view</p>
-                <p id="status-meta" class="phone-copy">Loading browser link…</p>
-                <p id="status-session" class="phone-session">No active agent task yet.</p>
-
-                <div class="phone-rail">
-                  <span>Claim tab</span>
-                  <span>Run task</span>
-                  <span>Release cleanly</span>
-                </div>
-              </article>
             </div>
           </div>
         </div>
